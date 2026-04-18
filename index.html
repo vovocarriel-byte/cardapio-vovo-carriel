@@ -1260,6 +1260,27 @@ body {
     color: var(--cor-tinta-suave);
 }
 
+.celebracao__numero {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px dotted var(--cor-tinta-suave);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--cor-tinta);
+}
+
+.celebracao__numero span {
+    display: block;
+    margin-top: 6px;
+    font-family: 'Bungee', cursive;
+    font-size: 22px;
+    color: var(--cor-destaque);
+    letter-spacing: 1px;
+}
+
 /* Botão de enviar em estado "sucesso" */
 .botao-primario.enviado {
     background: var(--cor-verde) !important;
@@ -1473,6 +1494,7 @@ body {
     <div class="celebracao__balao">
         <p class="celebracao__titulo">bão demais!</p>
         <p class="celebracao__texto">Seu pedido foi direitin pro zap :)</p>
+        <p class="celebracao__numero" id="celebracao-numero"></p>
     </div>
 </div>
 
@@ -1789,6 +1811,37 @@ let qtdAtual = 1;
    ============================================================ */
 function formatarPreco(valor) {
     return 'R$ ' + valor.toFixed(2).replace('.', ',');
+}
+
+/* ============================================================
+   NÚMERO DE PEDIDO (Caminho C — numeração local)
+   ============================================================ */
+let ultimoNumeroPedido = null;
+
+function gerarNumeroPedido() {
+    // Pega sequencial atual do navegador (começa em 0)
+    let seq = parseInt(localStorage.getItem('vc_pedido_seq') || '0', 10);
+    seq += 1;
+    localStorage.setItem('vc_pedido_seq', seq);
+    
+    // Sufixo único baseado no timestamp (evita colisão entre clientes diferentes)
+    const sufixo = Date.now().toString(36).slice(-4).toUpperCase();
+    
+    // Formata: #VC-0001-A3F7
+    const seqFormatado = String(seq).padStart(4, '0');
+    const numero = `#VC-${seqFormatado}-${sufixo}`;
+    
+    ultimoNumeroPedido = numero;
+    return numero;
+}
+
+function formatarDataHora(data) {
+    const dd = String(data.getDate()).padStart(2, '0');
+    const mm = String(data.getMonth() + 1).padStart(2, '0');
+    const yyyy = data.getFullYear();
+    const hh = String(data.getHours()).padStart(2, '0');
+    const min = String(data.getMinutes()).padStart(2, '0');
+    return `${dd}/${mm}/${yyyy} às ${hh}h${min}`;
 }
 
 function renderizarCardapio() {
@@ -2128,7 +2181,13 @@ function enviarPedido() {
     const troco = document.getElementById('campo-troco').value.trim();
     const obs = document.getElementById('campo-obs').value.trim();
     
-    let msg = `*>> NOVO PEDIDO — ${CONFIG.nomeLoja}*\n\n`;
+    // ===== NÚMERO DO PEDIDO =====
+    const numeroPedido = gerarNumeroPedido();
+    const dataHora = formatarDataHora(new Date());
+    
+    let msg = `*>> PEDIDO ${numeroPedido}*\n`;
+    msg += `_${dataHora}_\n`;
+    msg += `*>> ${CONFIG.nomeLoja}*\n\n`;
     
     // Itens
     msg += `*>> ITENS:*\n`;
@@ -2192,9 +2251,19 @@ function enviarPedido() {
     
     msg += `\n_Tô esperando a confirmação, sô! :)_`;
     
-    // Abre WhatsApp
+    // Abre WhatsApp de forma compatível com mobile e desktop
     const url = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
-    window.open(url, '_blank');
+    
+    // Detecta se é celular
+    const ehMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    
+    if (ehMobile) {
+        // No celular, redireciona a página atual pra abrir o app do WhatsApp
+        window.location.href = url;
+    } else {
+        // No desktop, abre em nova aba (WhatsApp Web)
+        window.open(url, '_blank');
+    }
 }
 
 /* ============================================================
@@ -2373,6 +2442,12 @@ function mostrarCelebracao() {
     const cel = document.getElementById('celebracao');
     if (!cel) return;
     
+    // Exibe o número do pedido no balão
+    const campoNumero = document.getElementById('celebracao-numero');
+    if (campoNumero && ultimoNumeroPedido) {
+        campoNumero.innerHTML = `Número do seu pedido<span>${ultimoNumeroPedido}</span>`;
+    }
+    
     cel.classList.add('visivel');
     soltarConfete();
     
@@ -2400,17 +2475,17 @@ function executarEnvio() {
     const botao = document.getElementById('botao-enviar');
     if (botao) botao.classList.add('enviado');
     
-    // Mostra celebração
+    // IMPORTANTE: abre o WhatsApp IMEDIATAMENTE, ainda no contexto do clique do usuário.
+    // Se esperar com setTimeout, navegadores de celular bloqueiam como pop-up suspeito.
+    _enviarOriginal.apply(this);
+    
+    // Celebração roda em paralelo (confete + balão "bão demais!")
     mostrarCelebracao();
     
-    // Espera a celebração ser apreciada e manda pro zap
+    // Reset do botão depois
     setTimeout(() => {
-        _enviarOriginal.apply(this);
-        // Reset do botão depois
-        setTimeout(() => {
-            if (botao) botao.classList.remove('enviado');
-        }, 1000);
-    }, 2200);
+        if (botao) botao.classList.remove('enviado');
+    }, 3000);
 }
 
 /* ============================================================
