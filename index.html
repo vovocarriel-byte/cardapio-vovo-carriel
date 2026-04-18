@@ -2378,7 +2378,7 @@ function mostrarCelebracao() {
     
     setTimeout(() => {
         cel.classList.remove('visivel');
-    }, 2800);
+    }, 4500);
 }
 
 // Intercepta envio do pedido
@@ -2391,13 +2391,7 @@ enviarPedido = function() {
         return;
     }
     
-    // Antes de enviar, verifica se vale sugerir a outra categoria
-    if (devesugerirOutraCategoria()) {
-        mostrarSugestao();
-        return; // suspende o envio até o usuário decidir
-    }
-    
-    // Se passou, envia de verdade
+    // Envia direto (sugestão agora acontece ao abrir o carrinho, não aqui)
     executarEnvio();
 };
 
@@ -2409,14 +2403,14 @@ function executarEnvio() {
     // Mostra celebração
     mostrarCelebracao();
     
-    // Espera a celebração começar e manda pro zap
+    // Espera a celebração ser apreciada e manda pro zap
     setTimeout(() => {
         _enviarOriginal.apply(this);
         // Reset do botão depois
         setTimeout(() => {
             if (botao) botao.classList.remove('enviado');
         }, 1000);
-    }, 800);
+    }, 2200);
 }
 
 /* ============================================================
@@ -2475,8 +2469,6 @@ function mostrarSugestao() {
     // Configura os cliques
     btnSim.onclick = () => {
         fecharSugestao();
-        // Fecha o carrinho também e leva pra outra seção
-        fecharCarrinho();
         setTimeout(() => {
             trocarSecao(outraSecao);
         }, 200);
@@ -2485,9 +2477,9 @@ function mostrarSugestao() {
     document.getElementById('sugestao-nao').onclick = () => {
         sugestaoDispensada = true;
         fecharSugestao();
-        // Após fechar, segue com o envio
+        // Após fechar, abre o carrinho de verdade
         setTimeout(() => {
-            executarEnvio();
+            _abrirCarrinhoOriginal();
         }, 200);
     };
     
@@ -2500,6 +2492,16 @@ function fecharSugestao() {
     overlay.classList.remove('aberto');
     document.body.style.overflow = '';
 }
+
+// Intercepta abrirCarrinho pra mostrar sugestão antes (quando aplicável)
+const _abrirCarrinhoOriginal = abrirCarrinho;
+abrirCarrinho = function() {
+    if (devesugerirOutraCategoria()) {
+        mostrarSugestao();
+        return;
+    }
+    _abrirCarrinhoOriginal();
+};
 
 /* ============================================================
    INICIALIZAÇÃO
