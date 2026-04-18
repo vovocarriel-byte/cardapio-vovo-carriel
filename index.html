@@ -9,7 +9,7 @@
 <!-- Fontes -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bungee&family=DM+Serif+Display:ital@0;1&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Montserrat:wght@300;400;500&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 /* ============================================
@@ -27,6 +27,71 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+/* ============================================
+   ANIMAÇÕES GLOBAIS (keyframes)
+   ============================================ */
+@keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fade-in-simple {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes respira-papel {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.005) rotate(0.1deg); }
+}
+
+@keyframes respira-botao {
+    0%, 100% { transform: scale(1); box-shadow: 0 8px 32px rgba(26, 21, 18, 0.15); }
+    50% { transform: scale(1.02); box-shadow: 0 10px 36px rgba(26, 21, 18, 0.22); }
+}
+
+@keyframes oscila-titulo {
+    0%, 100% { transform: rotate(-0.3deg); }
+    50% { transform: rotate(0.3deg); }
+}
+
+@keyframes pulo-preco {
+    0% { transform: scale(1); }
+    30% { transform: scale(1.25); color: var(--cor-destaque); }
+    100% { transform: scale(1); }
+}
+
+@keyframes carimbo {
+    0% { transform: scale(1); }
+    40% { transform: scale(0.96); }
+    100% { transform: scale(1); }
+}
+
+@keyframes confete-queda {
+    0% { transform: translateY(-20vh) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+@keyframes vapor-sobe {
+    0% { transform: translateY(0) scaleX(1); opacity: 0.4; }
+    50% { transform: translateY(-8px) scaleX(1.2); opacity: 0.2; }
+    100% { transform: translateY(-16px) scaleX(0.8); opacity: 0; }
+}
+
+@keyframes selo-entrada {
+    0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+    60% { transform: scale(1.15) rotate(5deg); opacity: 1; }
+    100% { transform: scale(1) rotate(-3deg); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
 
 html { scroll-behavior: smooth; }
 
@@ -54,13 +119,15 @@ body {
 }
 
 .header__selo {
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-style: italic;
     font-size: 11px;
     letter-spacing: 3px;
     text-transform: uppercase;
     color: var(--cor-tinta-suave);
     margin-bottom: 12px;
+    opacity: 0;
+    animation: fade-in-up 0.8s 0.1s ease-out forwards;
 }
 
 .header__titulo {
@@ -72,6 +139,10 @@ body {
     text-transform: lowercase;
     letter-spacing: 0;
     margin-bottom: 10px;
+    opacity: 0;
+    animation: fade-in-up 1s 0.3s ease-out forwards, oscila-titulo 8s 1.5s ease-in-out infinite;
+    display: inline-block;
+    transform-origin: center center;
 }
 
 .header__subtitulo {
@@ -81,17 +152,22 @@ body {
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--cor-destaque);
+    opacity: 0;
+    animation: fade-in-up 0.8s 0.6s ease-out forwards;
 }
 
 .header__info {
     margin-top: 20px;
     padding-top: 20px;
     border-top: 1px dotted var(--cor-tinta-suave);
-    font-family: 'DM Serif Display', serif;
-    font-style: italic;
-    font-size: 13px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-style: normal;
+    font-size: 12px;
     color: var(--cor-tinta-suave);
     line-height: 1.6;
+    opacity: 0;
+    animation: fade-in-up 0.8s 0.8s ease-out forwards;
 }
 
 .header__info strong {
@@ -105,30 +181,179 @@ body {
 }
 
 /* ============================================
-   NAVEGAÇÃO DE SEÇÕES
+   TELA DE BOAS-VINDAS
    ============================================ */
-.nav {
+.boas-vindas {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 32px 20px 40px;
+    position: relative;
+}
+
+.boas-vindas__header {
+    text-align: center;
+    padding: 24px 0 16px;
+}
+
+.boas-vindas__conteudo {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    padding: 20px 0;
+}
+
+.boas-vindas__pergunta {
+    font-family: 'Bungee', cursive;
+    font-size: clamp(22px, 6vw, 32px);
+    color: var(--cor-tinta);
+    text-align: center;
+    line-height: 1.15;
+    text-transform: lowercase;
+    opacity: 0;
+    animation: fade-in-up 0.9s 1s ease-out forwards;
+}
+
+.escolha-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 380px;
+}
+
+.escolha-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 28px 24px;
+    background: var(--cor-tinta);
+    color: var(--cor-papel);
+    border: 2px solid var(--cor-tinta);
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    font-family: inherit;
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fade-in-up 0.8s ease-out forwards;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s;
+    position: relative;
+    overflow: hidden;
+}
+
+.escolha-card:nth-child(1) { animation-delay: 1.3s; }
+.escolha-card:nth-child(2) { animation-delay: 1.5s; }
+
+.escolha-card:hover {
+    transform: translateY(-4px) rotate(-0.5deg);
+    box-shadow: 0 12px 32px rgba(26, 21, 18, 0.25);
+}
+
+.escolha-card:active {
+    transform: translateY(1px) scale(0.98);
+}
+
+.escolha-card__etiqueta {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.escolha-card__titulo {
+    font-family: 'Bungee', cursive;
+    font-size: clamp(28px, 8vw, 38px);
+    text-transform: lowercase;
+    line-height: 1;
+    letter-spacing: 0;
+}
+
+.escolha-card__subtitulo {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 1px;
+    opacity: 0.75;
+    margin-top: 4px;
+}
+
+.boas-vindas__rodape {
+    text-align: center;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    color: var(--cor-tinta-suave);
+    letter-spacing: 0.5px;
+    line-height: 1.6;
+    opacity: 0;
+    animation: fade-in-up 0.8s 1.8s ease-out forwards;
+}
+
+.boas-vindas__rodape strong {
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--cor-tinta);
+}
+
+/* ============================================
+   NAV TOPO (menu com 3 opções no cardápio)
+   ============================================ */
+.nav-topo {
     position: sticky;
     top: 0;
     background-color: var(--cor-papel);
     border-bottom: 1px solid var(--cor-tinta);
     z-index: 50;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
     box-shadow: var(--sombra-sutil);
 }
-.nav::-webkit-scrollbar { display: none; }
 
-.nav__lista {
+.nav-topo__voltar {
     display: inline-flex;
-    padding: 14px 16px;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    background: transparent;
+    border: 1px solid var(--cor-tinta-suave);
+    border-radius: 2px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--cor-tinta-suave);
+    text-transform: lowercase;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.nav-topo__voltar:hover {
+    color: var(--cor-tinta);
+    border-color: var(--cor-tinta);
+}
+
+.nav-topo__voltar span {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.nav-topo__opcoes {
+    display: flex;
     gap: 4px;
 }
 
-.nav__item {
+.nav-topo__opcao {
     font-family: 'Oswald', sans-serif;
     font-weight: 600;
     font-size: 13px;
@@ -142,11 +367,39 @@ body {
     background: none;
     transition: all 0.2s;
 }
-.nav__item.ativo,
-.nav__item:active {
+
+.nav-topo__opcao.ativo {
     color: var(--cor-papel);
     background-color: var(--cor-tinta);
     border-color: var(--cor-tinta);
+}
+
+.nav-topo__opcao:hover:not(.ativo) {
+    color: var(--cor-tinta);
+    border-color: var(--cor-tinta-suave);
+}
+
+/* Animação de troca de seção no cardápio */
+.cardapio-wrap {
+    animation: fade-in-simple 0.4s ease-out;
+}
+
+.secao.trocando-out {
+    animation: fade-out-slide 0.25s ease-in forwards;
+}
+
+.secao.trocando-in {
+    animation: fade-in-slide 0.35s ease-out forwards;
+}
+
+@keyframes fade-out-slide {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(-15px); }
+}
+
+@keyframes fade-in-slide {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* ============================================
@@ -161,6 +414,36 @@ body {
     margin-bottom: 28px;
     position: relative;
 }
+
+/* Reveal ao scroll */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visivel {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Stagger dos itens aparecendo em cascata */
+.itens .item {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.5s ease-out, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.itens.revelado .item {
+    opacity: 1;
+    transform: translateY(0);
+}
+.itens.revelado .item:nth-child(1) { transition-delay: 0.05s; }
+.itens.revelado .item:nth-child(2) { transition-delay: 0.1s; }
+.itens.revelado .item:nth-child(3) { transition-delay: 0.15s; }
+.itens.revelado .item:nth-child(4) { transition-delay: 0.2s; }
+.itens.revelado .item:nth-child(5) { transition-delay: 0.25s; }
+.itens.revelado .item:nth-child(6) { transition-delay: 0.3s; }
+.itens.revelado .item:nth-child(7) { transition-delay: 0.35s; }
+.itens.revelado .item:nth-child(8) { transition-delay: 0.4s; }
 
 .secao__titulo-grande {
     font-family: 'Bungee', cursive;
@@ -202,14 +485,25 @@ body {
     cursor: pointer;
     font-family: inherit;
     color: inherit;
-    transition: background-color 0.15s;
+    transition: background-color 0.2s, transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
     border-left: none;
     border-right: none;
     border-top: none;
+    position: relative;
+}
+
+.item:hover {
+    background-color: rgba(139, 58, 30, 0.03);
 }
 
 .item:active {
-    background-color: rgba(139, 58, 30, 0.06);
+    background-color: rgba(139, 58, 30, 0.08);
+    animation: carimbo 0.3s ease;
+}
+
+.item:hover .item__nome {
+    color: var(--cor-destaque);
+    transition: color 0.2s;
 }
 
 .item__topo {
@@ -249,23 +543,24 @@ body {
 }
 
 .item__descricao {
-    font-family: 'DM Serif Display', serif;
-    font-weight: 400;
-    font-size: 13px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 12px;
     color: var(--cor-tinta-suave);
-    line-height: 1.4;
+    line-height: 1.45;
     padding-right: 60px;
-    letter-spacing: 0.2px;
+    letter-spacing: 0.1px;
 }
 
 .item__tag {
     display: inline-block;
     margin-top: 6px;
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
     font-style: italic;
-    font-size: 11px;
+    font-size: 10px;
     color: var(--cor-destaque);
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
 }
 
 .item__tag::before { content: "+ "; }
@@ -336,7 +631,7 @@ body {
 }
 
 .modal__descricao {
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-size: 14px;
     color: var(--cor-tinta-suave);
     margin-bottom: 20px;
@@ -507,9 +802,26 @@ body {
     align-items: center;
     box-shadow: var(--sombra-media);
     z-index: 40;
-    animation: slide-up 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.2s, box-shadow 0.2s;
 }
-.carrinho-flutuante.visivel { display: flex; }
+.carrinho-flutuante.visivel { 
+    display: flex; 
+    animation: slide-up 0.4s cubic-bezier(0.16, 1, 0.3, 1), respira-botao 3.5s 0.8s ease-in-out infinite;
+}
+
+.carrinho-flutuante:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(26, 21, 18, 0.25);
+    animation-play-state: paused;
+}
+
+.carrinho-flutuante:active {
+    transform: translateY(1px);
+}
+
+.carrinho-flutuante.pulsando {
+    animation: respira-botao 0.4s ease-out;
+}
 
 .carrinho-flutuante__qtd {
     background: var(--cor-destaque);
@@ -521,6 +833,11 @@ body {
     justify-content: center;
     font-size: 13px;
     font-weight: 700;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.carrinho-flutuante__qtd.pulou {
+    animation: pulo-preco 0.5s ease-out;
 }
 
 /* ============================================
@@ -575,7 +892,7 @@ body {
 }
 
 .carrinho__item-detalhes {
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-style: italic;
     font-size: 12px;
     color: var(--cor-tinta-suave);
@@ -597,7 +914,7 @@ body {
 .carrinho__remover {
     background: none;
     border: none;
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-style: italic;
     font-size: 12px;
     color: var(--cor-destaque);
@@ -609,7 +926,7 @@ body {
 .carrinho__vazio {
     text-align: center;
     padding: 60px 20px;
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-style: italic;
     color: var(--cor-tinta-suave);
 }
@@ -661,7 +978,7 @@ body {
     padding-right: 40px;
 }
 
-.campo__textarea { resize: vertical; min-height: 72px; font-family: 'DM Serif Display', serif; font-size: 14px; }
+.campo__textarea { resize: vertical; min-height: 72px; font-family: 'Montserrat', sans-serif; font-size: 14px; }
 
 .campo__input:focus,
 .campo__select:focus,
@@ -718,7 +1035,7 @@ body {
 }
 
 .erro-campo {
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-style: italic;
     font-size: 12px;
     color: var(--cor-destaque);
@@ -748,7 +1065,7 @@ body {
 }
 
 .rodape__selo {
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-style: italic;
     font-size: 11px;
     letter-spacing: 3px;
@@ -758,11 +1075,195 @@ body {
 
 .rodape__info {
     margin-top: 20px;
-    font-family: 'DM Serif Display', serif;
+    font-family: 'Montserrat', sans-serif;
     font-style: italic;
     font-size: 12px;
     color: var(--cor-tinta-suave);
     line-height: 1.7;
+}
+
+/* ============================================
+   POP-UP DE SUGESTÃO (complementar pedido)
+   ============================================ */
+.sugestao-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 21, 18, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.sugestao-overlay.aberto {
+    display: flex;
+    animation: fade-in-simple 0.25s ease-out;
+}
+
+.sugestao {
+    background: var(--cor-papel);
+    border: 2px dashed var(--cor-tinta);
+    border-radius: 8px;
+    padding: 36px 28px 28px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(26, 21, 18, 0.3);
+    transform: scale(0.85) translateY(20px);
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+}
+
+.sugestao-overlay.aberto .sugestao {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+}
+
+.sugestao__etiqueta {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-style: italic;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--cor-tinta-suave);
+    margin-bottom: 12px;
+}
+
+.sugestao__pergunta {
+    font-family: 'Bungee', cursive;
+    font-size: 24px;
+    color: var(--cor-tinta);
+    text-transform: lowercase;
+    line-height: 1.15;
+    margin-bottom: 10px;
+}
+
+.sugestao__complemento {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    font-size: 13px;
+    color: var(--cor-tinta-suave);
+    line-height: 1.4;
+    margin-bottom: 24px;
+}
+
+.sugestao__acoes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sugestao__sim {
+    padding: 14px;
+    background: var(--cor-tinta);
+    color: var(--cor-papel);
+    border: none;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.2s, transform 0.15s;
+}
+
+.sugestao__sim:hover {
+    background: var(--cor-destaque);
+    transform: translateY(-1px);
+}
+
+.sugestao__sim:active {
+    transform: translateY(1px);
+}
+
+.sugestao__nao {
+    padding: 12px;
+    background: transparent;
+    color: var(--cor-tinta-suave);
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 13px;
+    cursor: pointer;
+    transition: color 0.2s;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.sugestao__nao:hover {
+    color: var(--cor-tinta);
+}
+
+/* ============================================
+   CONFETE E CELEBRAÇÃO
+   ============================================ */
+.confete {
+    position: fixed;
+    top: -20px;
+    width: 10px;
+    height: 14px;
+    pointer-events: none;
+    z-index: 200;
+    animation: confete-queda linear forwards;
+}
+
+.celebracao {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 150;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.celebracao.visivel {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.celebracao__balao {
+    background: var(--cor-papel);
+    border: 2px dashed var(--cor-tinta);
+    padding: 32px 40px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(26, 21, 18, 0.3);
+    transform: scale(0) rotate(-5deg);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.celebracao.visivel .celebracao__balao {
+    transform: scale(1) rotate(-2deg);
+}
+
+.celebracao__titulo {
+    font-family: 'Bungee', cursive;
+    font-size: 28px;
+    color: var(--cor-destaque);
+    margin-bottom: 8px;
+    line-height: 1;
+}
+
+.celebracao__texto {
+    font-family: 'Montserrat', sans-serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--cor-tinta-suave);
+}
+
+/* Botão de enviar em estado "sucesso" */
+.botao-primario.enviado {
+    background: var(--cor-verde) !important;
+    animation: carimbo 0.4s ease-out;
 }
 
 /* ============================================
@@ -778,49 +1279,75 @@ body {
 <body>
 
 <!-- ============================================
-     HEADER
+     TELA DE BOAS-VINDAS (escolha inicial)
      ============================================ -->
-<header class="header">
-    <p class="header__selo">Empório · São José da Lapa</p>
-    <h1 class="header__titulo">vovô carriel</h1>
-    <p class="header__subtitulo">Trem gostoso demais da conta</p>
-    <div class="header__info">
-        <strong>Horário</strong><br>
-        Seg à Sáb · 10h às 18h<br>
-        Dom · 9h às 13h
+<div class="boas-vindas" id="boas-vindas">
+    <header class="boas-vindas__header">
+        <p class="header__selo">Empório · São José da Lapa</p>
+        <h1 class="header__titulo">vovô carriel</h1>
+        <p class="header__subtitulo">Trem gostoso demais da conta</p>
+    </header>
+    
+    <div class="boas-vindas__conteudo">
+        <p class="boas-vindas__pergunta">O que cê vai pedi hoje, sô?</p>
+        
+        <div class="escolha-cards">
+            <button class="escolha-card" onclick="escolherSecao('trem-di-cume')">
+                <span class="escolha-card__etiqueta">pra comer</span>
+                <span class="escolha-card__titulo">trem di cumê</span>
+                <span class="escolha-card__subtitulo">pão de queijo · queijos · quitandas</span>
+            </button>
+            
+            <button class="escolha-card" onclick="escolherSecao('trem-di-bebe')">
+                <span class="escolha-card__etiqueta">pra beber</span>
+                <span class="escolha-card__titulo">trem di bebê</span>
+                <span class="escolha-card__subtitulo">cafezin · chazin · sucos</span>
+            </button>
+        </div>
+        
+        <div class="boas-vindas__rodape">
+            <strong>Horário</strong><br>
+            Seg à Sáb · 10h às 18h · Dom · 9h às 13h
+        </div>
     </div>
-</header>
+</div>
 
 <!-- ============================================
-     NAVEGAÇÃO
+     CARDÁPIO (aparece depois da escolha)
      ============================================ -->
-<nav class="nav" id="nav">
-    <div class="nav__lista">
-        <button class="nav__item ativo" data-secao="trem-di-cume">Trem di cumê</button>
-        <button class="nav__item" data-secao="trem-di-bebe">Trem di bebê</button>
+<div class="cardapio-wrap" id="cardapio-wrap" style="display:none;">
+
+<!-- Menu de 3 opções -->
+<nav class="nav-topo" id="nav-topo">
+    <button class="nav-topo__voltar" onclick="voltarBoasVindas()" aria-label="Voltar">
+        <span>←</span> voltar
+    </button>
+    <div class="nav-topo__opcoes">
+        <button class="nav-topo__opcao" data-secao="trem-di-cume" onclick="trocarSecao('trem-di-cume')">Cumê</button>
+        <button class="nav-topo__opcao" data-secao="trem-di-bebe" onclick="trocarSecao('trem-di-bebe')">Bebê</button>
     </div>
 </nav>
 
 <!-- ============================================
      SEÇÃO: TREM DI CUMÊ
      ============================================ -->
-<section class="secao" id="trem-di-cume">
+<section class="secao" id="trem-di-cume" style="display:none;">
     <div class="secao__header">
-        <h2 class="secao__titulo-grande">trem di cumê</h2>
+        <h2 class="secao__titulo-grande reveal">trem di cumê</h2>
     </div>
 
     <div class="secao__categoria">
-        <h3 class="secao__titulo-categoria">Pãodiqueijo</h3>
+        <h3 class="secao__titulo-categoria reveal">Pãodiqueijo</h3>
         <div class="itens" data-categoria="Pãodiqueijo"></div>
     </div>
 
     <div class="secao__categoria">
-        <h3 class="secao__titulo-categoria">Outros Trem</h3>
+        <h3 class="secao__titulo-categoria reveal">Outros Trem</h3>
         <div class="itens" data-categoria="Outros Trem Cumê"></div>
     </div>
 
     <div class="secao__categoria">
-        <h3 class="secao__titulo-categoria">Pedádiqueijo</h3>
+        <h3 class="secao__titulo-categoria reveal">Pedádiqueijo</h3>
         <div class="itens" data-categoria="Pedádiqueijo"></div>
     </div>
 </section>
@@ -828,32 +1355,32 @@ body {
 <!-- ============================================
      SEÇÃO: TREM DI BEBÊ
      ============================================ -->
-<section class="secao" id="trem-di-bebe">
+<section class="secao" id="trem-di-bebe" style="display:none;">
     <div class="secao__header">
-        <h2 class="secao__titulo-grande">trem di bebê</h2>
+        <h2 class="secao__titulo-grande reveal">trem di bebê</h2>
     </div>
 
     <!-- CHAZIN -->
     <div class="secao__categoria">
-        <h3 class="secao__titulo-categoria">Chazin</h3>
+        <h3 class="secao__titulo-categoria reveal">Chazin</h3>
         <div class="itens" data-categoria="Chazin"></div>
     </div>
 
     <!-- CAFEZIN -->
     <div class="secao__categoria">
-        <h3 class="secao__titulo-categoria">Cafezin</h3>
+        <h3 class="secao__titulo-categoria reveal">Cafezin</h3>
         <div class="itens" data-categoria="Cafezin"></div>
     </div>
 
     <!-- OUTROS TREM -->
     <div class="secao__categoria">
-        <h3 class="secao__titulo-categoria">Outros Trem</h3>
+        <h3 class="secao__titulo-categoria reveal">Outros Trem</h3>
         <div class="itens" data-categoria="Outros Trem Bebê"></div>
     </div>
 </section>
 
 <!-- ============================================
-     RODAPÉ
+     RODAPÉ (só aparece no cardápio)
      ============================================ -->
 <footer class="rodape">
     <p class="rodape__logo">vovô carriel</p>
@@ -864,6 +1391,8 @@ body {
         (31) 9 9520-8173
     </p>
 </footer>
+
+</div><!-- fim .cardapio-wrap -->
 
 <!-- ============================================
      BOTÃO FLUTUANTE DO CARRINHO
@@ -919,6 +1448,31 @@ body {
                 <span id="botao-enviar-total">R$ 0,00</span>
             </button>
         </div>
+    </div>
+</div>
+
+<!-- ============================================
+     POP-UP DE SUGESTÃO (complementar pedido)
+     ============================================ -->
+<div class="sugestao-overlay" id="sugestao-overlay">
+    <div class="sugestao">
+        <p class="sugestao__etiqueta">psiu, vovô aqui</p>
+        <p class="sugestao__pergunta" id="sugestao-pergunta"></p>
+        <p class="sugestao__complemento" id="sugestao-complemento"></p>
+        <div class="sugestao__acoes">
+            <button class="sugestao__sim" id="sugestao-sim">Vou espiar, sô</button>
+            <button class="sugestao__nao" id="sugestao-nao">Não, tá bão assim</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================
+     CELEBRAÇÃO DE PEDIDO ENVIADO
+     ============================================ -->
+<div class="celebracao" id="celebracao">
+    <div class="celebracao__balao">
+        <p class="celebracao__titulo">bão demais!</p>
+        <p class="celebracao__texto">Seu pedido foi direitin pro zap :)</p>
     </div>
 </div>
 
@@ -1574,10 +2128,10 @@ function enviarPedido() {
     const troco = document.getElementById('campo-troco').value.trim();
     const obs = document.getElementById('campo-obs').value.trim();
     
-    let msg = `*🛵 NOVO PEDIDO — ${CONFIG.nomeLoja}*\n\n`;
+    let msg = `*>> NOVO PEDIDO — ${CONFIG.nomeLoja}*\n\n`;
     
     // Itens
-    msg += `*🍞 ITENS:*\n`;
+    msg += `*>> ITENS:*\n`;
     carrinho.forEach(item => {
         msg += `• ${item.quantidade}x ${item.nome}`;
         if (item.opcoes.length) {
@@ -1597,7 +2151,7 @@ function enviarPedido() {
         bairroNome = CONFIG.bairros[parseInt(idx)].nome;
     }
     
-    msg += `\n*💰 TOTAIS:*\n`;
+    msg += `\n*>> TOTAIS:*\n`;
     msg += `Subtotal: ${formatarPreco(subtotal)}\n`;
     if (tipo === 'entrega') {
         msg += `Entrega: ${taxa > 0 ? formatarPreco(taxa) : 'a gente te fala'}\n`;
@@ -1607,7 +2161,7 @@ function enviarPedido() {
     msg += `*Total: ${formatarPreco(subtotal + taxa)}*\n`;
     
     // Cliente
-    msg += `\n*👤 CLIENTE:*\n`;
+    msg += `\n*>> CLIENTE:*\n`;
     msg += `Nome: ${nome}\n`;
     msg += `Telefone: ${telefone}\n`;
     
@@ -1615,16 +2169,16 @@ function enviarPedido() {
     if (tipo === 'entrega') {
         const end = document.getElementById('campo-endereco').value.trim();
         const ref = document.getElementById('campo-referencia').value.trim();
-        msg += `\n*📍 ENDEREÇO:*\n`;
+        msg += `\n*>> ENDEREÇO:*\n`;
         msg += `${end}\n`;
         msg += `Bairro: ${bairroNome}\n`;
         if (ref) msg += `Referência: ${ref}\n`;
     } else {
-        msg += `\n*📍 CÊ VAI BUSCÁ NO LOCAL*\n`;
+        msg += `\n*>> CÊ VAI BUSCÁ NO LOCAL*\n`;
     }
     
     // Pagamento
-    msg += `\n*💳 PAGAMENTO:*\n`;
+    msg += `\n*>> PAGAMENTO:*\n`;
     msg += `${pagamento}`;
     if (pagamento === 'Dinheiro' && troco) {
         msg += ` — troco pra ${troco}`;
@@ -1633,10 +2187,10 @@ function enviarPedido() {
     
     // Obs
     if (obs) {
-        msg += `\n*📝 OBSERVAÇÕES:*\n${obs}\n`;
+        msg += `\n*>> OBSERVAÇÕES:*\n${obs}\n`;
     }
     
-    msg += `\n_Tô esperando a confirmação, sô! 🚂_`;
+    msg += `\n_Tô esperando a confirmação, sô! :)_`;
     
     // Abre WhatsApp
     const url = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
@@ -1644,36 +2198,314 @@ function enviarPedido() {
 }
 
 /* ============================================================
-   NAVEGAÇÃO POR SEÇÕES
+   NAVEGAÇÃO ENTRE TELAS
    ============================================================ */
-document.querySelectorAll('.nav__item').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const secao = document.getElementById(btn.dataset.secao);
-        if (secao) {
-            const offset = 60;
-            const y = secao.getBoundingClientRect().top + window.scrollY - offset;
-            window.scrollTo({ top: y, behavior: 'smooth' });
-        }
-    });
-});
+let secaoAtual = null;
 
-// Destaca seção ativa na navegação conforme o scroll
-const observerSecoes = new IntersectionObserver(entries => {
+function escolherSecao(id) {
+    const boasVindas = document.getElementById('boas-vindas');
+    const cardapio = document.getElementById('cardapio-wrap');
+    
+    // Esconde a tela de boas-vindas com fade
+    boasVindas.style.transition = 'opacity 0.4s ease-out';
+    boasVindas.style.opacity = '0';
+    
+    setTimeout(() => {
+        boasVindas.style.display = 'none';
+        cardapio.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        mostrarSecao(id);
+    }, 400);
+}
+
+function voltarBoasVindas() {
+    const boasVindas = document.getElementById('boas-vindas');
+    const cardapio = document.getElementById('cardapio-wrap');
+    
+    cardapio.style.display = 'none';
+    boasVindas.style.display = 'flex';
+    boasVindas.style.opacity = '1';
+    secaoAtual = null;
+    window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function mostrarSecao(id) {
+    // Esconde todas as seções
+    document.querySelectorAll('.secao').forEach(s => {
+        s.style.display = 'none';
+        s.classList.remove('trocando-in', 'trocando-out');
+    });
+    
+    // Mostra a escolhida com animação de entrada
+    const alvo = document.getElementById(id);
+    if (alvo) {
+        alvo.style.display = 'block';
+        alvo.classList.add('trocando-in');
+    }
+    
+    // Atualiza botões do menu de 3 opções
+    document.querySelectorAll('.nav-topo__opcao').forEach(btn => {
+        btn.classList.toggle('ativo', btn.dataset.secao === id);
+    });
+    
+    secaoAtual = id;
+    
+    // Re-ativa reveals da nova seção (pra aparecerem os itens)
+    setTimeout(() => {
+        ativarReveals();
+    }, 100);
+}
+
+function trocarSecao(id) {
+    if (secaoAtual === id) return;
+    
+    const atual = document.getElementById(secaoAtual);
+    if (atual) {
+        atual.classList.add('trocando-out');
+        setTimeout(() => {
+            mostrarSecao(id);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 250);
+    } else {
+        mostrarSecao(id);
+    }
+}
+
+/* ============================================================
+   EFEITOS VISUAIS
+   ============================================================ */
+
+// Reveal ao scroll (para títulos e categorias)
+const observerReveal = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            document.querySelectorAll('.nav__item').forEach(btn => {
-                btn.classList.toggle('ativo', btn.dataset.secao === entry.target.id);
+            entry.target.classList.add('visivel');
+            observerReveal.unobserve(entry.target);
+        }
+    });
+}, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+
+// Observer pra revelar itens em cascata quando a categoria entra na tela
+const observerItens = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('revelado');
+            observerItens.unobserve(entry.target);
+        }
+    });
+}, { rootMargin: '0px 0px -15% 0px', threshold: 0.1 });
+
+function ativarReveals() {
+    // Pra seção ativa, reset e observa de novo os elementos que ainda não apareceram
+    document.querySelectorAll('.secao').forEach(secao => {
+        const estaVisivel = secao.style.display !== 'none';
+        
+        if (estaVisivel) {
+            // Garante que os elementos da seção ativa sejam observados
+            secao.querySelectorAll('.reveal').forEach(el => {
+                if (!el.classList.contains('visivel')) {
+                    observerReveal.observe(el);
+                }
+            });
+            secao.querySelectorAll('.itens').forEach(el => {
+                if (!el.classList.contains('revelado')) {
+                    observerItens.observe(el);
+                }
+            });
+        } else {
+            // Pra seção oculta, reseta o estado pra próxima vez que for exibida
+            secao.querySelectorAll('.reveal').forEach(el => {
+                el.classList.remove('visivel');
+            });
+            secao.querySelectorAll('.itens').forEach(el => {
+                el.classList.remove('revelado');
             });
         }
     });
-}, { rootMargin: '-40% 0px -55% 0px' });
+}
 
-document.querySelectorAll('.secao').forEach(s => observerSecoes.observe(s));
+// Pulso no carrinho ao adicionar item
+function pulsarCarrinho() {
+    const qtd = document.getElementById('carrinho-qtd');
+    const botao = document.getElementById('botao-carrinho');
+    if (qtd) {
+        qtd.classList.remove('pulou');
+        void qtd.offsetWidth; // força reflow
+        qtd.classList.add('pulou');
+    }
+    if (botao) {
+        botao.classList.remove('pulsando');
+        void botao.offsetWidth;
+        botao.classList.add('pulsando');
+    }
+}
+
+// Intercepta a função original de adicionar pra pulsar o carrinho
+const _adicionarOriginal = adicionarAoCarrinho;
+adicionarAoCarrinho = function() {
+    _adicionarOriginal.apply(this, arguments);
+    setTimeout(pulsarCarrinho, 50);
+};
+
+// Gerar confete
+function soltarConfete() {
+    const cores = ['#8b3a1e', '#4a5d3a', '#1a1512', '#d9cdb2', '#c99a5e', '#6b4a2a'];
+    const total = 60;
+    
+    for (let i = 0; i < total; i++) {
+        const c = document.createElement('div');
+        c.className = 'confete';
+        c.style.left = Math.random() * 100 + 'vw';
+        c.style.background = cores[Math.floor(Math.random() * cores.length)];
+        c.style.animationDuration = (2 + Math.random() * 2) + 's';
+        c.style.animationDelay = Math.random() * 0.5 + 's';
+        c.style.width = (6 + Math.random() * 8) + 'px';
+        c.style.height = (10 + Math.random() * 10) + 'px';
+        if (Math.random() > 0.5) c.style.borderRadius = '50%';
+        document.body.appendChild(c);
+        
+        setTimeout(() => c.remove(), 4500);
+    }
+}
+
+// Mostrar celebração
+function mostrarCelebracao() {
+    const cel = document.getElementById('celebracao');
+    if (!cel) return;
+    
+    cel.classList.add('visivel');
+    soltarConfete();
+    
+    setTimeout(() => {
+        cel.classList.remove('visivel');
+    }, 2800);
+}
+
+// Intercepta envio do pedido
+const _enviarOriginal = enviarPedido;
+enviarPedido = function() {
+    // Chama validação original — se inválido, retorna antes da celebração
+    if (!validarPedido()) {
+        const primeiroErro = document.querySelector('.erro-campo.visivel');
+        if (primeiroErro) primeiroErro.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+    }
+    
+    // Antes de enviar, verifica se vale sugerir a outra categoria
+    if (devesugerirOutraCategoria()) {
+        mostrarSugestao();
+        return; // suspende o envio até o usuário decidir
+    }
+    
+    // Se passou, envia de verdade
+    executarEnvio();
+};
+
+function executarEnvio() {
+    // Marca o botão como "enviado" (verde)
+    const botao = document.getElementById('botao-enviar');
+    if (botao) botao.classList.add('enviado');
+    
+    // Mostra celebração
+    mostrarCelebracao();
+    
+    // Espera a celebração começar e manda pro zap
+    setTimeout(() => {
+        _enviarOriginal.apply(this);
+        // Reset do botão depois
+        setTimeout(() => {
+            if (botao) botao.classList.remove('enviado');
+        }, 1000);
+    }, 800);
+}
+
+/* ============================================================
+   SUGESTÃO DE COMPLEMENTO (cumê <-> bebê)
+   ============================================================ */
+let sugestaoDispensada = false;
+
+// Mapeia cada item do carrinho à sua seção principal (cumê ou bebê)
+function getSecaoDoItem(itemId) {
+    const item = CARDAPIO.find(i => i.id === itemId);
+    if (!item) return null;
+    
+    const categoriasBebe = ['Chazin', 'Cafezin', 'Outros Trem Bebê'];
+    const categoriasCume = ['Pãodiqueijo', 'Outros Trem Cumê', 'Pedádiqueijo'];
+    
+    if (categoriasBebe.includes(item.categoria)) return 'trem-di-bebe';
+    if (categoriasCume.includes(item.categoria)) return 'trem-di-cume';
+    return null;
+}
+
+function devesugerirOutraCategoria() {
+    if (sugestaoDispensada) return false;
+    if (carrinho.length === 0) return false;
+    
+    // Descobre quais seções estão representadas no carrinho
+    const secoes = new Set(carrinho.map(i => getSecaoDoItem(i.id)).filter(Boolean));
+    
+    // Só sugere se tem APENAS uma seção
+    return secoes.size === 1;
+}
+
+function mostrarSugestao() {
+    const secoes = new Set(carrinho.map(i => getSecaoDoItem(i.id)).filter(Boolean));
+    const secaoAtualCarrinho = Array.from(secoes)[0];
+    
+    const overlay = document.getElementById('sugestao-overlay');
+    const pergunta = document.getElementById('sugestao-pergunta');
+    const complemento = document.getElementById('sugestao-complemento');
+    const btnSim = document.getElementById('sugestao-sim');
+    
+    let outraSecao, textoPergunta, textoComplemento;
+    
+    if (secaoAtualCarrinho === 'trem-di-cume') {
+        outraSecao = 'trem-di-bebe';
+        textoPergunta = 'vai querer um cafezin procê acompanhar?';
+        textoComplemento = 'A gente tem cafezin, chazin, sucos e outros trem pra bebê.';
+    } else {
+        outraSecao = 'trem-di-cume';
+        textoPergunta = 'e um pãodiqueijo procê acompanhar?';
+        textoComplemento = 'A gente tem pãodiqueijo, queijos e outros trem pra cumê.';
+    }
+    
+    pergunta.textContent = textoPergunta;
+    complemento.textContent = textoComplemento;
+    
+    // Configura os cliques
+    btnSim.onclick = () => {
+        fecharSugestao();
+        // Fecha o carrinho também e leva pra outra seção
+        fecharCarrinho();
+        setTimeout(() => {
+            trocarSecao(outraSecao);
+        }, 200);
+    };
+    
+    document.getElementById('sugestao-nao').onclick = () => {
+        sugestaoDispensada = true;
+        fecharSugestao();
+        // Após fechar, segue com o envio
+        setTimeout(() => {
+            executarEnvio();
+        }, 200);
+    };
+    
+    overlay.classList.add('aberto');
+    document.body.style.overflow = 'hidden';
+}
+
+function fecharSugestao() {
+    const overlay = document.getElementById('sugestao-overlay');
+    overlay.classList.remove('aberto');
+    document.body.style.overflow = '';
+}
 
 /* ============================================================
    INICIALIZAÇÃO
    ============================================================ */
 renderizarCardapio();
+ativarReveals();
 </script>
 
 </body>
