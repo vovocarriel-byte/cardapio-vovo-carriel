@@ -2118,7 +2118,7 @@ function atualizarTaxa() {
     }
     
     document.getElementById('resumo-taxa').textContent = tipo === 'retirada' 
-        ? 'cê vai buscá' 
+        ? 'preocupa não sô, eu vô buscar!' 
         : (taxa > 0 ? formatarPreco(taxa) : 'a gente te fala');
     document.getElementById('resumo-total').textContent = formatarPreco(subtotal + taxa);
     document.getElementById('botao-enviar-total').textContent = formatarPreco(subtotal + taxa);
@@ -2215,7 +2215,7 @@ function enviarPedido() {
     if (tipo === 'entrega') {
         msg += `Entrega: ${taxa > 0 ? formatarPreco(taxa) : 'a gente te fala'}\n`;
     } else {
-        msg += `Entrega: cê vai buscá\n`;
+        msg += `Entrega: preocupa não sô, eu vô buscar!\n`;
     }
     msg += `*Total: ${formatarPreco(subtotal + taxa)}*\n`;
     
@@ -2233,7 +2233,7 @@ function enviarPedido() {
         msg += `Bairro: ${bairroNome}\n`;
         if (ref) msg += `Referência: ${ref}\n`;
     } else {
-        msg += `\n*>> CÊ VAI BUSCÁ NO LOCAL*\n`;
+        msg += `\n*>> PREOCUPA NÃO SÔ, EU VÔ BUSCAR!*\n`;
     }
     
     // Pagamento
