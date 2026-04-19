@@ -196,6 +196,50 @@ body {
     padding: 24px 0 16px;
 }
 
+.status-selo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 14px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fade-in-up 0.8s 1.2s ease-out forwards;
+}
+
+.status-selo.aberto {
+    background: rgba(74, 93, 58, 0.12);
+    color: var(--cor-verde);
+    border: 1px solid rgba(74, 93, 58, 0.3);
+}
+
+.status-selo.fechado {
+    background: rgba(26, 21, 18, 0.08);
+    color: var(--cor-tinta-suave);
+    border: 1px solid rgba(26, 21, 18, 0.2);
+}
+
+.status-selo__bolinha {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.status-selo.aberto .status-selo__bolinha {
+    animation: pulsar-bolinha 2s ease-in-out infinite;
+}
+
+@keyframes pulsar-bolinha {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(74, 93, 58, 0.5); }
+    50% { opacity: 0.7; box-shadow: 0 0 0 5px rgba(74, 93, 58, 0); }
+}
+
 .boas-vindas__conteudo {
     flex: 1;
     display: flex;
@@ -1307,6 +1351,7 @@ body {
         <p class="header__selo">Empório · São José da Lapa</p>
         <h1 class="header__titulo">vovô carriel</h1>
         <p class="header__subtitulo">Trem gostoso demais da conta</p>
+        <div class="status-selo" id="status-selo"></div>
     </header>
     
     <div class="boas-vindas__conteudo">
@@ -1473,6 +1518,20 @@ body {
 </div>
 
 <!-- ============================================
+     POP-UP DE FECHADO (fora do horário)
+     ============================================ -->
+<div class="sugestao-overlay" id="fechado-overlay">
+    <div class="sugestao">
+        <p class="sugestao__etiqueta">ô, sinto muito</p>
+        <p class="sugestao__pergunta" id="fechado-pergunta">a gente tá fechado agorinha</p>
+        <p class="sugestao__complemento" id="fechado-complemento"></p>
+        <div class="sugestao__acoes">
+            <button class="sugestao__sim" id="fechado-ok">entendi, sô</button>
+        </div>
+    </div>
+</div>
+
+<!-- ============================================
      POP-UP DE SUGESTÃO (complementar pedido)
      ============================================ -->
 <div class="sugestao-overlay" id="sugestao-overlay">
@@ -1525,7 +1584,20 @@ const CONFIG = {
     ],
     
     // Formas de pagamento aceitas
-    pagamentos: ['Dinheiro', 'Pix', 'Débito', 'Crédito']
+    pagamentos: ['Dinheiro', 'Pix', 'Débito', 'Crédito'],
+    
+    // Horário de funcionamento
+    // Dias: 0=Domingo, 1=Segunda, 2=Terça, 3=Quarta, 4=Quinta, 5=Sexta, 6=Sábado
+    // Formato: { inicio: 'HH:MM', fim: 'HH:MM' } ou null se fechado
+    horarios: {
+        0: { inicio: '09:00', fim: '13:00' }, // Domingo
+        1: { inicio: '10:00', fim: '18:00' }, // Segunda
+        2: { inicio: '10:00', fim: '18:00' }, // Terça
+        3: { inicio: '10:00', fim: '18:00' }, // Quarta
+        4: { inicio: '10:00', fim: '18:00' }, // Quinta
+        5: { inicio: '10:00', fim: '18:00' }, // Sexta
+        6: { inicio: '10:00', fim: '18:00' }  // Sábado
+    }
 };
 
 /* ============================================================
@@ -2249,7 +2321,7 @@ function enviarPedido() {
         msg += `\n*>> OBSERVAÇÕES:*\n${obs}\n`;
     }
     
-    msg += `\n_Tô esperando a confirmação, sô! :)_`;
+    msg += `\n_Tô esperando a confirmação, viu? :)_`;
     
     // Abre WhatsApp de forma compatível com mobile e desktop
     const url = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
@@ -2579,10 +2651,104 @@ abrirCarrinho = function() {
 };
 
 /* ============================================================
+   HORÁRIO DE FUNCIONAMENTO
+   ============================================================ */
+function formatarHorariosLista() {
+    // Retorna um texto humanizado dos horários (agrupando dias iguais)
+    const nomesDias = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+    const h = CONFIG.horarios;
+    
+    // Agrupa sequências com mesmo horário
+    const textos = [];
+    for (let d = 0; d < 7; d++) {
+        const hoje = h[d];
+        if (!hoje) continue;
+        textos.push({ dia: d, hora: `${hoje.inicio} às ${hoje.fim}` });
+    }
+    
+    // Tentativa simples de agrupamento: Seg-Sáb com mesmo horário
+    const semana = [1,2,3,4,5,6].every(d => 
+        h[d] && h[1] && h[d].inicio === h[1].inicio && h[d].fim === h[1].fim
+    );
+    
+    let linhas = [];
+    if (semana && h[1]) {
+        linhas.push(`Seg à Sáb · ${h[1].inicio.replace(':00','h').replace(':','h')} às ${h[1].fim.replace(':00','h').replace(':','h')}`);
+        if (h[0]) linhas.push(`Dom · ${h[0].inicio.replace(':00','h').replace(':','h')} às ${h[0].fim.replace(':00','h').replace(':','h')}`);
+    } else {
+        for (let d = 0; d < 7; d++) {
+            if (h[d]) linhas.push(`${nomesDias[d]} · ${h[d].inicio} às ${h[d].fim}`);
+        }
+    }
+    return linhas.join('\n');
+}
+
+function estaAberto() {
+    const agora = new Date();
+    const diaSemana = agora.getDay();
+    const horario = CONFIG.horarios[diaSemana];
+    
+    if (!horario) return false;
+    
+    const [hInicio, mInicio] = horario.inicio.split(':').map(Number);
+    const [hFim, mFim] = horario.fim.split(':').map(Number);
+    
+    const minutosAgora = agora.getHours() * 60 + agora.getMinutes();
+    const minutosInicio = hInicio * 60 + mInicio;
+    const minutosFim = hFim * 60 + mFim;
+    
+    return minutosAgora >= minutosInicio && minutosAgora < minutosFim;
+}
+
+function atualizarSeloStatus() {
+    const selo = document.getElementById('status-selo');
+    if (!selo) return;
+    
+    const aberto = estaAberto();
+    selo.className = 'status-selo ' + (aberto ? 'aberto' : 'fechado');
+    selo.innerHTML = `<span class="status-selo__bolinha"></span>${aberto ? 'aberto agora' : 'fechado agora'}`;
+}
+
+function mostrarFechado() {
+    const overlay = document.getElementById('fechado-overlay');
+    const complemento = document.getElementById('fechado-complemento');
+    
+    const horariosTexto = formatarHorariosLista().replace(/\n/g, '<br>');
+    complemento.innerHTML = `Volta pra pedi quando a gente tivé aberto, viu? Nosso horário é:<br><br><strong style="font-family:'Oswald',sans-serif; font-weight:600; letter-spacing:1px; font-size:13px; color:var(--cor-tinta);">${horariosTexto}</strong>`;
+    
+    document.getElementById('fechado-ok').onclick = () => {
+        overlay.classList.remove('aberto');
+        document.body.style.overflow = '';
+    };
+    
+    overlay.classList.add('aberto');
+    document.body.style.overflow = 'hidden';
+}
+
+// Intercepta abertura de item pra bloquear se fechado
+const _abrirItemOriginal = abrirItem;
+abrirItem = function(id) {
+    if (!estaAberto()) {
+        mostrarFechado();
+        return;
+    }
+    _abrirItemOriginal(id);
+};
+
+// Atualiza o selo periodicamente (caso a pessoa fique com o site aberto por horas)
+setInterval(atualizarSeloStatus, 60000); // a cada 1 minuto
+
+/* ============================================================
    INICIALIZAÇÃO
    ============================================================ */
 renderizarCardapio();
 ativarReveals();
+atualizarSeloStatus();
+
+// Se estiver fechado ao entrar, mostra o aviso depois de 1.5s (deixa a animação de entrada terminar)
+if (!estaAberto()) {
+    setTimeout(mostrarFechado, 1800);
+}
 </script>
 
 </body>
