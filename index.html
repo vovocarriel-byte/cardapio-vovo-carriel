@@ -1595,7 +1595,94 @@ body {
     .carrinho-flutuante { left: 50%; transform: translateX(-50%); }
 }
 
-</style>
+/* ============================================
+   ACESSO INTERNO
+   ============================================ */
+.acesso-interno-btn {
+    position: fixed;
+    bottom: 12px;
+    left: 12px;
+    background: transparent;
+    border: 1px solid rgba(70,92,64,0.25);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-family: 'Lato', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(70,92,64,0.4);
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.2s;
+}
+.acesso-interno-btn:hover {
+    background: rgba(70,92,64,0.08);
+    color: rgba(70,92,64,0.8);
+    border-color: rgba(70,92,64,0.5);
+}
+
+.senha-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(42,58,39,0.88);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+}
+.senha-overlay.aberto { display: flex; }
+.senha-box {
+    background: var(--cor-papel);
+    padding: 32px 28px;
+    border-radius: 4px;
+    width: 90%;
+    max-width: 300px;
+    text-align: center;
+}
+.senha-box__titulo { font-family:'Playfair Display',serif; font-style:italic; font-size:20px; color:var(--cor-tinta); margin-bottom:4px; }
+.senha-box__sub { font-family:'Lato',sans-serif; font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--cor-tinta-suave); margin-bottom:18px; }
+.senha-box__input { width:100%; padding:12px; border:1.5px solid var(--cor-verde); background:transparent; font-family:'Lato',sans-serif; font-size:18px; font-weight:700; letter-spacing:6px; text-align:center; color:var(--cor-tinta); border-radius:2px; margin-bottom:10px; }
+.senha-box__input:focus { outline:none; }
+.senha-box__btn { width:100%; padding:12px; background:var(--cor-verde); color:var(--cor-papel); border:none; font-family:'Lato',sans-serif; font-weight:700; font-size:12px; letter-spacing:3px; text-transform:uppercase; cursor:pointer; border-radius:2px; }
+.senha-box__erro { font-family:'Lato',sans-serif; font-size:12px; color:#B91C1C; margin-top:8px; min-height:16px; font-style:italic; }
+.senha-box__cancelar { margin-top:10px; font-family:'Lato',sans-serif; font-size:11px; color:var(--cor-tinta-suave); background:none; border:none; cursor:pointer; text-decoration:underline; display:block; }
+
+#pagina-interna { display:none; background:var(--cor-papel); min-height:100vh; }
+
+.interno-nav { display:flex; align-items:center; justify-content:space-between; padding:14px 20px; background:var(--cor-verde); position:sticky; top:0; z-index:50; }
+.interno-nav__titulo { font-family:'Lato',sans-serif; font-weight:900; font-size:13px; letter-spacing:1px; text-transform:lowercase; color:var(--cor-destaque); }
+.interno-nav__voltar { font-family:'Lato',sans-serif; font-size:12px; color:rgba(237,228,219,0.8); background:none; border:none; cursor:pointer; }
+
+.interno-body { padding:20px 20px 140px; max-width:500px; margin:0 auto; }
+.interno-secao-titulo { font-family:'Playfair Display',serif; font-style:italic; font-size:24px; font-weight:700; color:var(--cor-tinta); margin:24px 0 14px; }
+
+.interno-categoria { margin-bottom:20px; }
+.interno-categoria__titulo { font-family:'Lato',sans-serif; font-size:10px; font-weight:700; letter-spacing:4px; text-transform:uppercase; color:var(--cor-laranja); padding-bottom:8px; margin-bottom:10px; border-bottom:1.5px solid var(--cor-laranja); text-align:center; }
+
+.interno-item { background:var(--cor-papel); border:1px solid rgba(70,92,64,0.15); border-radius:4px; margin-bottom:8px; overflow:hidden; }
+.interno-item__header { display:flex; align-items:center; gap:10px; padding:13px 14px; cursor:pointer; background:none; border:none; width:100%; text-align:left; }
+.interno-item__header.expandido { background:rgba(70,92,64,0.04); }
+.interno-item__nome { font-family:'Playfair Display',serif; font-size:14px; color:var(--cor-tinta); flex:1; }
+.interno-item__preco { font-family:'Lato',sans-serif; font-size:12px; font-weight:700; color:var(--cor-laranja); }
+.interno-item__seta { font-size:9px; color:var(--cor-tinta-suave); transition:transform 0.2s; }
+.interno-item__header.expandido .interno-item__seta { transform:rotate(180deg); }
+
+.interno-item__specs { display:none; padding:0 14px 14px; border-top:1px dashed rgba(70,92,64,0.12); }
+.interno-item__specs.aberto { display:block; }
+
+.spec-grupo { margin-top:10px; }
+.spec-grupo__titulo { font-family:'Lato',sans-serif; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--cor-verde); margin-bottom:6px; }
+.spec-opcoes { display:flex; flex-wrap:wrap; gap:6px; }
+.spec-chip { padding:5px 12px; border:1.5px solid rgba(70,92,64,0.25); border-radius:20px; font-family:'Lato',sans-serif; font-size:12px; color:var(--cor-tinta); cursor:pointer; background:transparent; transition:all 0.15s; white-space:nowrap; }
+.spec-chip.sel { background:var(--cor-verde); border-color:var(--cor-verde); color:var(--cor-papel); font-weight:700; }
+
+.interno-item__qtd { display:flex; align-items:center; gap:10px; margin-top:10px; padding-top:10px; border-top:1px dashed rgba(70,92,64,0.1); }
+.qtd-label-int { font-family:'Lato',sans-serif; font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--cor-tinta-suave); flex:1; }
+
+.interno-enviar { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--cor-verde); color:var(--cor-papel); border:none; border-radius:40px; padding:14px 28px; font-family:'Lato',sans-serif; font-weight:700; font-size:13px; letter-spacing:2px; text-transform:uppercase; cursor:pointer; display:none; align-items:center; gap:10px; box-shadow:0 4px 20px rgba(42,58,39,0.3); z-index:50; white-space:nowrap; }
+.interno-enviar.visivel { display:flex; }
+.interno-enviar__badge { background:var(--cor-laranja); color:white; border-radius:50%; width:22px; height:22px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; }</style>
 </head>
 <body>
 
@@ -1631,8 +1718,9 @@ body {
         
         <div class="boas-vindas__rodape">
             <strong>Horário</strong><br>
-            Empório: Seg–Sex 10h às 18h · Sáb 9h30 às 18h<br>
-            Café: Seg–Sex 14h às 18h · Sáb 9h30 às 18h
+            📅 Seg–Sex · 10h às 18h<br>
+            📅 Sáb · 9h30 às 18h<br>
+            🔒 Dom · fechado
         </div>
     </div>
 </div>
@@ -1716,9 +1804,516 @@ body {
 
 </div><!-- fim .cardapio-wrap -->
 
+<!-- Botão fixo de acesso interno (sempre visível, discreto) -->
+<button class="acesso-interno-btn" onclick="abrirAcessoInterno()" title="Acesso interno">🔐 acesso restrito</button>
+
 <!-- ============================================
-     BOTÃO FLUTUANTE DO CARRINHO
+     MODAL DE SENHA — ACESSO INTERNO
      ============================================ -->
+<div class="senha-overlay" id="senha-overlay">
+    <div class="senha-box">
+        <p class="senha-box__titulo">acesso restrito</p>
+        <p class="senha-box__sub">uso interno — vovô carriel</p>
+        <input class="senha-box__input" id="senha-input" type="password" placeholder="••••"
+            onkeydown="if(event.key==='Enter') verificarSenha()">
+        <button class="senha-box__btn" onclick="verificarSenha()">entrar</button>
+        <p class="senha-box__erro" id="senha-erro"></p>
+        <button class="senha-box__cancelar" onclick="fecharSenha()">cancelar</button>
+    </div>
+</div>
+
+<!-- ============================================
+     PÁGINA INTERNA — PEDIDOS DA LOJA (Virgínia)
+     ============================================ -->
+<div id="pagina-interna">
+    <nav class="interno-nav">
+        <span class="interno-nav__titulo">🏪 pedidos internos</span>
+        <button class="interno-nav__voltar" onclick="fecharInterno()">← sair</button>
+    </nav>
+
+    <div class="interno-body">
+
+        <!-- Campo nome do cliente -->
+        <div style="background:rgba(70,92,64,0.06); border-radius:4px; padding:14px 16px; margin-bottom:20px; border-left:3px solid var(--cor-verde);">
+            <label style="font-family:'Lato',sans-serif; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--cor-verde); display:block; margin-bottom:8px;">👤 Nome do cliente</label>
+            <input id="interno-nome-cliente"
+                style="width:100%; padding:10px 12px; border:1.5px solid rgba(70,92,64,0.3); border-radius:2px; background:var(--cor-papel); font-family:'Playfair Display',serif; font-size:16px; color:var(--cor-tinta);"
+                placeholder="Nome de quem pediu..."
+                type="text">
+        </div>
+
+        <p class="interno-secao-titulo">trem di bebê</p>
+
+        <div class="interno-categoria">
+            <p class="interno-categoria__titulo">☕ Quentes</p>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('filtrado-specs',this)">
+                    <span class="interno-item__nome">Filtrado</span>
+                    <span class="interno-item__preco">R$ 3,00</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="filtrado-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Tipo</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Tradicional</button><button class="spec-chip" onclick="toggleChip(this)">Gourmet</button></div></div>
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Intensidade</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Forte</button><button class="spec-chip" onclick="toggleChip(this)">Equilibrado</button></div></div>
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Açúcar</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Com açúcar</button><button class="spec-chip" onclick="toggleChip(this)">Sem açúcar</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('filtrado',-1)">−</button><span class="qtd-numero" id="qtd-filtrado">0</span><button class="qtd-botao" onclick="mudaQtdInt('filtrado',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('coado-specs',this)">
+                    <span class="interno-item__nome">Coado</span>
+                    <span class="interno-item__preco">R$ 4,00</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="coado-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Tipo</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Tradicional</button><button class="spec-chip" onclick="toggleChip(this)">Gourmet</button></div></div>
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Intensidade</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Forte</button><button class="spec-chip" onclick="toggleChip(this)">Equilibrado</button></div></div>
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Açúcar</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Com açúcar</button><button class="spec-chip" onclick="toggleChip(this)">Sem açúcar</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('coado',-1)">−</button><span class="qtd-numero" id="qtd-coado">0</span><button class="qtd-botao" onclick="mudaQtdInt('coado',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('pingado-specs',this)">
+                    <span class="interno-item__nome">Pingado Gourmet</span>
+                    <span class="interno-item__preco">R$ 5,50</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="pingado-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Base</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Expresso</button><button class="spec-chip" onclick="toggleChip(this)">Coado</button></div></div>
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Açúcar</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Com açúcar</button><button class="spec-chip" onclick="toggleChip(this)">Sem açúcar</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('pingado',-1)">−</button><span class="qtd-numero" id="qtd-pingado">0</span><button class="qtd-botao" onclick="mudaQtdInt('pingado',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('cafeleite-specs',this)">
+                    <span class="interno-item__nome">Café com Leite</span>
+                    <span class="interno-item__preco">R$ 5,50</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="cafeleite-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Base</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Expresso</button><button class="spec-chip" onclick="toggleChip(this)">Coado</button></div></div>
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Açúcar</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Com açúcar</button><button class="spec-chip" onclick="toggleChip(this)">Sem açúcar</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('cafeleite',-1)">−</button><span class="qtd-numero" id="qtd-cafeleite">0</span><button class="qtd-botao" onclick="mudaQtdInt('cafeleite',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('cappvo-specs',this)">
+                    <span class="interno-item__nome">Cappuccino do Vô</span>
+                    <span class="interno-item__preco">R$ 12,00</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="cappvo-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Açúcar</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Com açúcar</button><button class="spec-chip" onclick="toggleChip(this)">Sem açúcar</button></div></div>
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Chantilly</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Com chantilly</button><button class="spec-chip" onclick="toggleChip(this)">Sem chantilly</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('cappvo',-1)">−</button><span class="qtd-numero" id="qtd-cappvo">0</span><button class="qtd-botao" onclick="mudaQtdInt('cappvo',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('cappdoce-specs',this)">
+                    <span class="interno-item__nome">Cappuccino de Dordilêite</span>
+                    <span class="interno-item__preco">R$ 12,00</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="cappdoce-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Chantilly</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Com chantilly</button><button class="spec-chip" onclick="toggleChip(this)">Sem chantilly</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('cappdoce',-1)">−</button><span class="qtd-numero" id="qtd-cappdoce">0</span><button class="qtd-botao" onclick="mudaQtdInt('cappdoce',1)">+</button></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="interno-categoria">
+            <p class="interno-categoria__titulo">🧊 Geladas</p>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('refri-specs',this)">
+                    <span class="interno-item__nome">Refri 200ml</span>
+                    <span class="interno-item__preco">R$ 3,50</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="refri-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Sabor</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Coca-Cola</button><button class="spec-chip" onclick="toggleChip(this)">Guaraná</button><button class="spec-chip" onclick="toggleChip(this)">Pepsi</button><button class="spec-chip" onclick="toggleChip(this)">Pepsi Black</button><button class="spec-chip" onclick="toggleChip(this)">Sukita Laranja</button><button class="spec-chip" onclick="toggleChip(this)">Soda</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('refri',-1)">−</button><span class="qtd-numero" id="qtd-refri">0</span><button class="qtd-botao" onclick="mudaQtdInt('refri',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('guaramao-specs',this)">
+                    <span class="interno-item__nome">Guaramão</span>
+                    <span class="interno-item__preco">R$ 7,10</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="guaramao-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Versão</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Tradicional</button><button class="spec-chip" onclick="toggleChip(this)">Zero açúcar</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('guaramao',-1)">−</button><span class="qtd-numero" id="qtd-guaramao">0</span><button class="qtd-botao" onclick="mudaQtdInt('guaramao',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('suco-specs',this)">
+                    <span class="interno-item__nome">Suco</span>
+                    <span class="interno-item__preco">R$ 9,00</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="suco-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Sabor</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Morango</button><button class="spec-chip" onclick="toggleChip(this)">Laranja</button></div></div>
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Açúcar</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Com açúcar</button><button class="spec-chip" onclick="toggleChip(this)">Sem açúcar</button></div></div>
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Gelo</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Com gelo</button><button class="spec-chip" onclick="toggleChip(this)">Sem gelo</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('suco',-1)">−</button><span class="qtd-numero" id="qtd-suco">0</span><button class="qtd-botao" onclick="mudaQtdInt('suco',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('pink-specs',this)">
+                    <span class="interno-item__nome">Pink Lemonade</span>
+                    <span class="interno-item__preco">R$ 13,80</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="pink-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Sabor</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Morango</button><button class="spec-chip" onclick="toggleChip(this)">Maçã Verde</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('pink',-1)">−</button><span class="qtd-numero" id="qtd-pink">0</span><button class="qtd-botao" onclick="mudaQtdInt('pink',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('frap-specs',this)">
+                    <span class="interno-item__nome">Frapuccino Dordilêite</span>
+                    <span class="interno-item__preco">R$ 15,00</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="frap-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Chantilly</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Com chantilly</button><button class="spec-chip" onclick="toggleChip(this)">Sem chantilly</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('frap',-1)">−</button><span class="qtd-numero" id="qtd-frap">0</span><button class="qtd-botao" onclick="mudaQtdInt('frap',1)">+</button></div>
+                </div>
+            </div>
+        </div>
+
+        <p class="interno-secao-titulo">trem di cumê</p>
+
+        <div class="interno-categoria">
+            <p class="interno-categoria__titulo">🧀 Pãodiqueijo</p>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('brasilina-specs',this)">
+                    <span class="interno-item__nome">Brasilina Tradicional</span>
+                    <span class="interno-item__preco">R$ 4,00</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="brasilina-specs">
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('brasilina',-1)">−</button><span class="qtd-numero" id="qtd-brasilina">0</span><button class="qtd-botao" onclick="mudaQtdInt('brasilina',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('sobradeiro-specs',this)">
+                    <span class="interno-item__nome">Sobradeiro</span>
+                    <span class="interno-item__preco">R$ 7,50</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="sobradeiro-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Preparo</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Maçaricado</button><button class="spec-chip" onclick="toggleChip(this)">Prensado</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('sobradeiro',-1)">−</button><span class="qtd-numero" id="qtd-sobradeiro">0</span><button class="qtd-botao" onclick="mudaQtdInt('sobradeiro',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('lapense-specs',this)">
+                    <span class="interno-item__nome">Lapense – Doce</span>
+                    <span class="interno-item__preco">R$ 7,50</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="lapense-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Doce de leite</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Tradicional</button><button class="spec-chip" onclick="toggleChip(this)">De café</button></div></div>
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Chantilly</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Com chantilly</button><button class="spec-chip" onclick="toggleChip(this)">Sem chantilly</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('lapense',-1)">−</button><span class="qtd-numero" id="qtd-lapense">0</span><button class="qtd-botao" onclick="mudaQtdInt('lapense',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('maravilha-specs',this)">
+                    <span class="interno-item__nome">Maravilha – Doce</span>
+                    <span class="interno-item__preco">R$ 7,50</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="maravilha-specs">
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('maravilha',-1)">−</button><span class="qtd-numero" id="qtd-maravilha">0</span><button class="qtd-botao" onclick="mudaQtdInt('maravilha',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('dona-specs',this)">
+                    <span class="interno-item__nome">Dona Inácia</span>
+                    <span class="interno-item__preco">R$ 9,50</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="dona-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Preparo</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Maçaricado</button><button class="spec-chip" onclick="toggleChip(this)">Prensado</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('dona',-1)">−</button><span class="qtd-numero" id="qtd-dona">0</span><button class="qtd-botao" onclick="mudaQtdInt('dona',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('dom-specs',this)">
+                    <span class="interno-item__nome">Dom Pedrão</span>
+                    <span class="interno-item__preco">R$ 9,80</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="dom-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Preparo</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Maçaricado</button><button class="spec-chip" onclick="toggleChip(this)">Prensado</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('dom',-1)">−</button><span class="qtd-numero" id="qtd-dom">0</span><button class="qtd-botao" onclick="mudaQtdInt('dom',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('carrancas-specs',this)">
+                    <span class="interno-item__nome">Carrancas</span>
+                    <span class="interno-item__preco">R$ 12,50</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="carrancas-specs">
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('carrancas',-1)">−</button><span class="qtd-numero" id="qtd-carrancas">0</span><button class="qtd-botao" onclick="mudaQtdInt('carrancas',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('grota-specs',this)">
+                    <span class="interno-item__nome">Grota do Andu</span>
+                    <span class="interno-item__preco">R$ 12,50</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="grota-specs">
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('grota',-1)">−</button><span class="qtd-numero" id="qtd-grota">0</span><button class="qtd-botao" onclick="mudaQtdInt('grota',1)">+</button></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="interno-categoria">
+            <p class="interno-categoria__titulo">🥩 Salgados</p>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('esfcostela-specs',this)">
+                    <span class="interno-item__nome">Esfirra de Costela</span>
+                    <span class="interno-item__preco">R$ 8,80</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="esfcostela-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Molho</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Ketchup + Maionese</button><button class="spec-chip" onclick="toggleChip(this)">Só ketchup</button><button class="spec-chip" onclick="toggleChip(this)">Só maionese</button><button class="spec-chip" onclick="toggleChip(this)">Sem molho</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('esfcostela',-1)">−</button><span class="qtd-numero" id="qtd-esfcostela">0</span><button class="qtd-botao" onclick="mudaQtdInt('esfcostela',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('esffrango-specs',this)">
+                    <span class="interno-item__nome">Esfirra de Frango</span>
+                    <span class="interno-item__preco">R$ 8,80</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="esffrango-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Molho</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Ketchup + Maionese</button><button class="spec-chip" onclick="toggleChip(this)">Só ketchup</button><button class="spec-chip" onclick="toggleChip(this)">Só maionese</button><button class="spec-chip" onclick="toggleChip(this)">Sem molho</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('esffrango',-1)">−</button><span class="qtd-numero" id="qtd-esffrango">0</span><button class="qtd-botao" onclick="mudaQtdInt('esffrango',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('coxinha-specs',this)">
+                    <span class="interno-item__nome">Coxinha</span>
+                    <span class="interno-item__preco">R$ 7,80</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="coxinha-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Molho</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Ketchup + Maionese</button><button class="spec-chip" onclick="toggleChip(this)">Só ketchup</button><button class="spec-chip" onclick="toggleChip(this)">Só maionese</button><button class="spec-chip" onclick="toggleChip(this)">Sem molho</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('coxinha',-1)">−</button><span class="qtd-numero" id="qtd-coxinha">0</span><button class="qtd-botao" onclick="mudaQtdInt('coxinha',1)">+</button></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="interno-categoria">
+            <p class="interno-categoria__titulo">🍰 Bolos</p>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('broaq-specs',this)">
+                    <span class="interno-item__nome">Broa de Fubá cum Queijo</span>
+                    <span class="interno-item__preco">R$ 10,00</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="broaq-specs">
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('broaq',-1)">−</button><span class="qtd-numero" id="qtd-broaq">0</span><button class="qtd-botao" onclick="mudaQtdInt('broaq',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('broad-specs',this)">
+                    <span class="interno-item__nome">Broa de Fubá cum Doce</span>
+                    <span class="interno-item__preco">R$ 14,00</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="broad-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Cobertura</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Goiabada</button><button class="spec-chip" onclick="toggleChip(this)">Dordilête</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('broad',-1)">−</button><span class="qtd-numero" id="qtd-broad">0</span><button class="qtd-botao" onclick="mudaQtdInt('broad',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('bolin-specs',this)">
+                    <span class="interno-item__nome">Bolin de Cenoura cum Chocolate</span>
+                    <span class="interno-item__preco">R$ 15,00</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="bolin-specs">
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('bolin',-1)">−</button><span class="qtd-numero" id="qtd-bolin">0</span><button class="qtd-botao" onclick="mudaQtdInt('bolin',1)">+</button></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="interno-categoria">
+            <p class="interno-categoria__titulo">🍽️ Pedádiqueijo</p>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('minas-specs',this)">
+                    <span class="interno-item__nome">Minas, Frescal ou Trança</span>
+                    <span class="interno-item__preco">R$ 12,50</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="minas-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Tipo</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Minas</button><button class="spec-chip" onclick="toggleChip(this)">Frescal</button><button class="spec-chip" onclick="toggleChip(this)">Trança</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('minas',-1)">−</button><span class="qtd-numero" id="qtd-minas">0</span><button class="qtd-botao" onclick="mudaQtdInt('minas',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('qcumdoce-specs',this)">
+                    <span class="interno-item__nome">Queijo cum Doce</span>
+                    <span class="interno-item__preco">R$ 13,50</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="qcumdoce-specs">
+                    <div class="spec-grupo"><p class="spec-grupo__titulo">Acompanhamento</p><div class="spec-opcoes"><button class="spec-chip" onclick="toggleChip(this)">Doce de leite</button><button class="spec-chip" onclick="toggleChip(this)">Goiabada</button></div></div>
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('qcumdoce',-1)">−</button><span class="qtd-numero" id="qtd-qcumdoce">0</span><button class="qtd-botao" onclick="mudaQtdInt('qcumdoce',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('qbemcasado-specs',this)">
+                    <span class="interno-item__nome">Queijo Bem Casado</span>
+                    <span class="interno-item__preco">R$ 13,50</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="qbemcasado-specs">
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('qbemcasado',-1)">−</button><span class="qtd-numero" id="qtd-qbemcasado">0</span><button class="qtd-botao" onclick="mudaQtdInt('qbemcasado',1)">+</button></div>
+                </div>
+            </div>
+
+            <div class="interno-item">
+                <button class="interno-item__header" onclick="toggleInterno('frescalint-specs',this)">
+                    <span class="interno-item__nome">Queijo Frescal Inteiro</span>
+                    <span class="interno-item__preco">R$ 28,80</span>
+                    <span class="interno-item__seta">▼</span>
+                </button>
+                <div class="interno-item__specs" id="frescalint-specs">
+                    <div class="interno-item__qtd"><span class="qtd-label-int">Qtd</span><button class="qtd-botao" onclick="mudaQtdInt('frescalint',-1)">−</button><span class="qtd-numero" id="qtd-frescalint">0</span><button class="qtd-botao" onclick="mudaQtdInt('frescalint',1)">+</button></div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- fim interno-body -->
+
+    <button class="interno-enviar" id="interno-enviar" onclick="enviarInternoWhatsApp()">
+        <span>enviar pedido</span>
+        <span class="interno-enviar__badge" id="interno-badge">0</span>
+    </button>
+</div><!-- fim pagina-interna -->
+
+<script>
+/* ============================================================
+   LÓGICA DA PÁGINA INTERNA (Virgínia)
+   ============================================================ */
+const SENHA_INTERNA = 'vovo';
+
+function abrirAcessoInterno() {
+    document.getElementById('senha-overlay').classList.add('aberto');
+    setTimeout(() => document.getElementById('senha-input').focus(), 150);
+}
+function fecharSenha() {
+    document.getElementById('senha-overlay').classList.remove('aberto');
+    document.getElementById('senha-input').value = '';
+    document.getElementById('senha-erro').textContent = '';
+}
+function verificarSenha() {
+    const val = document.getElementById('senha-input').value.toLowerCase().trim();
+    if (val === SENHA_INTERNA) {
+        fecharSenha();
+        abrirInterno();
+    } else {
+        document.getElementById('senha-erro').textContent = 'senha errada, sô 😅';
+        document.getElementById('senha-input').value = '';
+        document.getElementById('senha-input').focus();
+    }
+}
+function abrirInterno() {
+    document.getElementById('boas-vindas').style.display = 'none';
+    document.getElementById('cardapio-wrap').style.display = 'none';
+    document.getElementById('pagina-interna').style.display = 'block';
+    window.scrollTo(0,0);
+}
+function fecharInterno() {
+    document.getElementById('pagina-interna').style.display = 'none';
+    document.getElementById('boas-vindas').style.display = 'flex';
+}
+function toggleInterno(specsId, btn) {
+    const specs = document.getElementById(specsId);
+    const aberto = specs.classList.contains('aberto');
+    specs.classList.toggle('aberto', !aberto);
+    btn.classList.toggle('expandido', !aberto);
+}
+function toggleChip(chip) {
+    chip.classList.toggle('sel');
+}
+function mudaQtdInt(id, delta) {
+    const el = document.getElementById('qtd-' + id);
+    if (!el) return;
+    let qtd = Math.max(0, parseInt(el.textContent) + delta);
+    el.textContent = qtd;
+    atualizarBadgeInterno();
+}
+function atualizarBadgeInterno() {
+    let total = 0;
+    document.querySelectorAll('#pagina-interna .qtd-numero').forEach(el => {
+        total += parseInt(el.textContent) || 0;
+    });
+    const badge = document.getElementById('interno-badge');
+    const btn = document.getElementById('interno-enviar');
+    if (badge) badge.textContent = total;
+    if (btn) btn.classList.toggle('visivel', total > 0);
+}
+function enviarInternoWhatsApp() {
+    const nome = document.getElementById('interno-nome-cliente').value.trim();
+    let msg = '🏪 *PEDIDO INTERNO — Vovô Carriel*\n';
+    msg += nome ? `👤 *Cliente: ${nome}*\n\n` : '\n';
+    let temItem = false;
+    document.querySelectorAll('#pagina-interna .interno-item').forEach(item => {
+        const nomeEl = item.querySelector('.interno-item__nome');
+        const precoEl = item.querySelector('.interno-item__preco');
+        const specsEl = item.querySelector('.interno-item__specs');
+        if (!nomeEl || !specsEl) return;
+        const qtdEl = specsEl.querySelector('.qtd-numero');
+        if (!qtdEl) return;
+        const qtd = parseInt(qtdEl.textContent) || 0;
+        if (qtd === 0) return;
+        temItem = true;
+        msg += `*${qtd}x ${nomeEl.textContent.trim()}* — ${precoEl.textContent.trim()}\n`;
+        specsEl.querySelectorAll('.spec-chip.sel').forEach(c => { msg += `   • ${c.textContent.trim()}\n`; });
+        msg += '\n';
+    });
+    if (!temItem) { alert('Adiciona pelo menos um item, sô!'); return; }
+    msg += '_Pedido anotado internamente_';
+    window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`, '_blank');
+}
+</script>
 <button class="carrinho-flutuante" id="botao-carrinho" onclick="abrirCarrinho()">
     <span style="display:flex; align-items:center; gap:12px;">
         <span class="carrinho-flutuante__qtd" id="carrinho-qtd">0</span>
@@ -1852,17 +2447,6 @@ const CONFIG = {
         3: { inicio: '10:00', fim: '18:00' },  // Quarta
         4: { inicio: '10:00', fim: '18:00' },  // Quinta
         5: { inicio: '10:00', fim: '18:00' },  // Sexta
-        6: { inicio: '09:30', fim: '18:00' }   // Sábado
-    },
-
-    // Horários do café (funcionamento diferente)
-    horariosCafe: {
-        0: null,
-        1: { inicio: '14:00', fim: '18:00' },  // Segunda
-        2: { inicio: '14:00', fim: '18:00' },  // Terça
-        3: { inicio: '14:00', fim: '18:00' },  // Quarta
-        4: { inicio: '14:00', fim: '18:00' },  // Quinta
-        5: { inicio: '14:00', fim: '18:00' },  // Sexta
         6: { inicio: '09:30', fim: '18:00' }   // Sábado
     }
 };
@@ -2945,10 +3529,8 @@ abrirCarrinho = function() {
    ============================================================ */
 function formatarHorariosLista() {
     return [
-        'Empório: Seg–Sex · 10h às 18h',
-        'Empório: Sáb · 9h30 às 18h',
-        'Café: Seg–Sex · 14h às 18h',
-        'Café: Sáb · 9h30 às 18h',
+        'Seg–Sex · 10h às 18h',
+        'Sáb · 9h30 às 18h',
         'Dom · fechado'
     ].join('\n');
 }
@@ -2984,11 +3566,9 @@ function mostrarFechado() {
     const complemento = document.getElementById('fechado-complemento');
 
     complemento.innerHTML = `Volta pra pedi quando a gente tivé aberto, viu?<br><br>
-        <strong style="font-family:'Lato',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--cor-verde);">🏪 Empório</strong><br>
-        <span style="font-family:'Lato',sans-serif;font-size:13px;color:var(--cor-tinta);">Seg–Sex · 10h às 18h<br>Sáb · 9h30 às 18h</span><br><br>
-        <strong style="font-family:'Lato',sans-serif;font-weight:700;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:var(--cor-verde);">☕ Café</strong><br>
-        <span style="font-family:'Lato',sans-serif;font-size:13px;color:var(--cor-tinta);">Seg–Sex · 14h às 18h<br>Sáb · 9h30 às 18h</span><br><br>
-        <span style="font-family:'Lato',sans-serif;font-size:12px;color:var(--cor-tinta-suave);">Dom · fechado</span>`;
+        <strong style="font-family:'Lato',sans-serif;font-weight:700;font-size:13px;color:var(--cor-tinta);">
+        📅 Seg–Sex · 10h às 18h<br>📅 Sáb · 9h30 às 18h<br>🔒 Dom · fechado
+        </strong>`;
 
     document.getElementById('fechado-ok').onclick = () => {
         overlay.classList.remove('aberto');
